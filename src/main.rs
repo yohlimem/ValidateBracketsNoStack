@@ -1,8 +1,9 @@
+use std::io;
 
 
 fn main() {
-    let string = "{a{v}d}d(s)(a{{}d})";
-    println!("{}",parentasis(string));
+    let line = io::stdin().lines().next().unwrap().unwrap();
+    println!("the string {} is valid: {}", line, parentasis(line.trim()));
 }
 
 fn parentasis(string: &str) -> bool{
@@ -17,11 +18,11 @@ fn parentasis(string: &str) -> bool{
     if check_if_par(&i_char) == 0 {
         return parentasis(&string[1..]);
     }
-    println!("i: {}, string: {} \n ========", i_char, string);
+    // println!("i: {}, string: {} \n ========", i_char, string);
 
 
     if check_if_par(&i_char) == 2 {
-        println!("start par is close!");
+        // println!("start par is close!");
         return false;
     }
 
@@ -30,12 +31,12 @@ fn parentasis(string: &str) -> bool{
             return parentasis(&string[(pos+1)..]);
         }
         
-        println!("big parantesis!!!");
+        // println!("big parantesis!!!");
         return parentasis(&string[(pos+1)..]) && parentasis(&string[1..pos]);
         
         
     } else {
-        println!("pos is false");
+        // println!("pos is false");
         return false;
     }
 
@@ -63,7 +64,7 @@ fn find_closing(string: &str, open: &char, i: usize, counter: usize) -> Option<u
     // ()
     if check_if_par(&i_char) == 2 {
         if same_type(&open, &i_char) { // iterate over brackets until you find closing
-            println!("i: {}, {}, counter: {} \n ========", i, i_char, counter);
+            // println!("i: {}, {}, counter: {} \n ========", i, i_char, counter);
             if counter <= 1 {
                 return Some(i);
             }
