@@ -1,11 +1,11 @@
 
 
 fn main() {
-    let string = "{{}}()({{}})";
-    println!("{}",parentasis(string, 0, 0));
+    let string = "{a{v}d}d(s)(a{{}d})";
+    println!("{}",parentasis(string));
 }
 
-fn parentasis(string: &str, i: usize, j: usize) -> bool{
+fn parentasis(string: &str) -> bool{
     let len = string.chars().count();
     // let j_char = indexes(string, j);
     if len == 0 {
@@ -13,8 +13,11 @@ fn parentasis(string: &str, i: usize, j: usize) -> bool{
     }
     
     
-    let i_char = indexes(string, i);
-    println!("i: {}, {}, string: {} \n ========", i, i_char, string);
+    let i_char = indexes(string, 0);
+    if check_if_par(&i_char) == 0 {
+        return parentasis(&string[1..]);
+    }
+    println!("i: {}, string: {} \n ========", i_char, string);
 
 
     if check_if_par(&i_char) == 2 {
@@ -24,11 +27,11 @@ fn parentasis(string: &str, i: usize, j: usize) -> bool{
 
     if let Some(pos) = find_closing(string, &i_char, 0, 0) {
         if pos == 1 {
-            return parentasis(&string[(pos+1)..], 0, 0);
+            return parentasis(&string[(pos+1)..]);
         }
         
         println!("big parantesis!!!");
-        return parentasis(&string[(pos+1)..], 0, 0) && parentasis(&string[1..pos], 0, 0);
+        return parentasis(&string[(pos+1)..]) && parentasis(&string[1..pos]);
         
         
     } else {
@@ -53,7 +56,9 @@ fn parentasis(string: &str, i: usize, j: usize) -> bool{
 fn find_closing(string: &str, open: &char, i: usize, counter: usize) -> Option<usize>{
     if i > string.chars().count() - 1 {return None};
     let i_char = indexes(string, i);
-    
+    if check_if_par(&i_char) == 0 {
+        return find_closing(string, open, i+1, counter);
+    }
     // (({[()]})}
     // ()
     if check_if_par(&i_char) == 2 {
